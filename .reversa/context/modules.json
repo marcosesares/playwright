@@ -1,0 +1,503 @@
+{
+  "generated_at": "2026-06-04T00:00:00Z",
+  "modules": [
+    {
+      "name": "playwright-core/client",
+      "path": "packages/playwright-core/src/client",
+      "purpose": "Public user-facing API — all classes users interact with (Page, Frame, Locator, BrowserContext, Browser, etc.)",
+      "primary_files": [
+        "packages/playwright-core/src/client/channelOwner.ts",
+        "packages/playwright-core/src/client/page.ts",
+        "packages/playwright-core/src/client/frame.ts",
+        "packages/playwright-core/src/client/locator.ts",
+        "packages/playwright-core/src/client/browserContext.ts",
+        "packages/playwright-core/src/client/browser.ts",
+        "packages/playwright-core/src/client/browserType.ts",
+        "packages/playwright-core/src/client/network.ts",
+        "packages/playwright-core/src/client/connection.ts"
+      ],
+      "functions": [
+        {
+          "name": "ChannelOwner._wrapApiCall",
+          "file": "packages/playwright-core/src/client/channelOwner.ts",
+          "line": 176,
+          "params": ["func: (apiZone: ApiZone) => Promise<R>", "options?: {internal?, title?}"],
+          "returns": "Promise<R>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "ChannelOwner._createChannel",
+          "file": "packages/playwright-core/src/client/channelOwner.ts",
+          "line": 145,
+          "params": ["base: Object"],
+          "returns": "T (channel Proxy)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "ChannelOwner._updateSubscription",
+          "file": "packages/playwright-core/src/client/channelOwner.ts",
+          "line": 70,
+          "params": ["event: string|symbol", "enabled: boolean"],
+          "returns": "void",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "ChannelOwner._dispose",
+          "file": "packages/playwright-core/src/client/channelOwner.ts",
+          "line": 117,
+          "params": ["reason: 'gc' | undefined"],
+          "returns": "void",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Locator constructor",
+          "file": "packages/playwright-core/src/client/locator.ts",
+          "line": 46,
+          "params": ["frame: Frame", "selector: string", "options?: LocatorOptions"],
+          "returns": "Locator",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "ChannelOwner",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "_connection", "type": "Connection", "required": true },
+            { "name": "_guid", "type": "string", "required": true },
+            { "name": "_type", "type": "string", "required": true },
+            { "name": "_channel", "type": "T extends channels.Channel", "required": true },
+            { "name": "_objects", "type": "Map<string, ChannelOwner>", "required": true },
+            { "name": "_wasCollected", "type": "boolean", "required": true, "default": "false" }
+          ]
+        },
+        {
+          "name": "ApiZone",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "apiName", "type": "string", "required": true },
+            { "name": "frames", "type": "channels.StackFrame[]", "required": true },
+            { "name": "internal", "type": "boolean", "required": false },
+            { "name": "reported", "type": "boolean", "required": true },
+            { "name": "stepId", "type": "string", "required": false }
+          ]
+        },
+        {
+          "name": "Page",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "_mainFrame", "type": "Frame", "required": true },
+            { "name": "_frames", "type": "Set<Frame>", "required": true },
+            { "name": "_routes", "type": "RouteHandler[]", "required": true },
+            { "name": "_locatorHandlers", "type": "Map<number, {locator, handler, times}>", "required": true },
+            { "name": "_closed", "type": "boolean", "required": true }
+          ]
+        },
+        {
+          "name": "Locator",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "_frame", "type": "Frame", "required": true },
+            { "name": "_selector", "type": "string", "required": true }
+          ]
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Inner has/hasNot locators must belong to the same frame",
+          "location": "packages/playwright-core/src/client/locator.ts:56",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Event subscription is reference-counted — first listener enables protocol event, last removal disables it",
+          "location": "packages/playwright-core/src/client/channelOwner.ts:76-109",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "toJSON returns only {_type, _guid} to prevent Jest circular ref crashes",
+          "location": "packages/playwright-core/src/client/channelOwner.ts:210-218",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["protocol", "isomorphic", "playwright-core/server (via protocol)"],
+      "algorithms": [
+        {
+          "name": "Proxy-based channel creation",
+          "description": "Proxy intercepts method calls → validates params → routes to server via WebSocket RPC",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Stack trace capture for user-facing errors",
+          "description": "captureLibraryStackTrace strips internal frames to show user code in error stacks",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "playwright-core/server",
+      "path": "packages/playwright-core/src/server",
+      "purpose": "Browser control implementation — spawns browsers, executes commands, manages page/frame/context lifecycle",
+      "primary_files": [
+        "packages/playwright-core/src/server/instrumentation.ts",
+        "packages/playwright-core/src/server/playwright.ts",
+        "packages/playwright-core/src/server/browserType.ts",
+        "packages/playwright-core/src/server/browser.ts",
+        "packages/playwright-core/src/server/browserContext.ts",
+        "packages/playwright-core/src/server/page.ts",
+        "packages/playwright-core/src/server/frames.ts",
+        "packages/playwright-core/src/server/progress.ts",
+        "packages/playwright-core/src/server/selectors.ts"
+      ],
+      "functions": [],
+      "entities": [
+        {
+          "name": "SdkObject",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "guid", "type": "string", "required": true },
+            { "name": "attribution", "type": "Attribution", "required": true },
+            { "name": "instrumentation", "type": "Instrumentation", "required": true },
+            { "name": "logName", "type": "LogName", "required": false }
+          ]
+        },
+        {
+          "name": "Attribution",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "playwright", "type": "Playwright", "required": true },
+            { "name": "browserType", "type": "BrowserType", "required": false },
+            { "name": "browser", "type": "Browser", "required": false },
+            { "name": "context", "type": "BrowserContext|APIRequestContext", "required": false },
+            { "name": "page", "type": "Page", "required": false },
+            { "name": "frame", "type": "Frame", "required": false },
+            { "name": "worker", "type": "Worker", "required": false }
+          ]
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "guid format is prefix@uuid — createGuid from @utils/crypto",
+          "location": "packages/playwright-core/src/server/instrumentation.ts:55",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["protocol", "isomorphic", "utils"],
+      "algorithms": [],
+      "complexity": "very high"
+    },
+    {
+      "name": "playwright-core/server/dispatchers",
+      "path": "packages/playwright-core/src/server/dispatchers",
+      "purpose": "RPC dispatcher layer — wraps SdkObjects and exposes them over the wire protocol to client ChannelOwners",
+      "primary_files": [
+        "packages/playwright-core/src/server/dispatchers/dispatcher.ts",
+        "packages/playwright-core/src/server/dispatchers/pageDispatcher.ts",
+        "packages/playwright-core/src/server/dispatchers/frameDispatcher.ts",
+        "packages/playwright-core/src/server/dispatchers/browserContextDispatcher.ts",
+        "packages/playwright-core/src/server/dispatchers/browserDispatcher.ts",
+        "packages/playwright-core/src/server/dispatchers/browserTypeDispatcher.ts"
+      ],
+      "functions": [
+        {
+          "name": "setMaxDispatchersForTest",
+          "file": "packages/playwright-core/src/server/dispatchers/dispatcher.ts",
+          "line": 42,
+          "params": ["value: number | undefined"],
+          "returns": "void",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Dispatcher",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "connection", "type": "DispatcherConnection", "required": true },
+            { "name": "_guid", "type": "string", "required": true },
+            { "name": "_type", "type": "string", "required": true },
+            { "name": "_gcBucket", "type": "string", "required": true },
+            { "name": "_object", "type": "SdkObject", "required": true },
+            { "name": "_disposed", "type": "boolean", "required": true }
+          ]
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "GC bucket limits: JSHandle/ElementHandle=100k, all others=10k dispatchers max",
+          "location": "packages/playwright-core/src/server/dispatchers/dispatcher.ts:41-51",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["playwright-core/server", "protocol"],
+      "algorithms": [
+        {
+          "name": "GC bucket overflow eviction",
+          "description": "When a bucket exceeds its limit, oldest dispatchers are disposed and clients notified",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "playwright-core/tools/mcp",
+      "path": "packages/playwright-core/src/tools/mcp",
+      "purpose": "MCP (Model Context Protocol) server — exposes browser automation as AI-callable tools",
+      "primary_files": [
+        "packages/playwright-core/src/tools/mcp/config.ts",
+        "packages/playwright-core/src/tools/mcp/browserModel.ts",
+        "packages/playwright-core/src/tools/mcp/browserFactory.ts",
+        "packages/playwright-core/src/tools/mcp/program.ts",
+        "packages/playwright-core/src/tools/mcp/index.ts",
+        "packages/playwright-core/src/entry/mcp.ts"
+      ],
+      "functions": [
+        {
+          "name": "resolveCLIConfigForMCP",
+          "file": "packages/playwright-core/src/tools/mcp/config.ts",
+          "line": 115,
+          "params": ["cliOptions: CLIOptions", "env?: NodeJS.ProcessEnv"],
+          "returns": "Promise<FullConfig>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "resolveCLIConfigForCLI",
+          "file": "packages/playwright-core/src/tools/mcp/config.ts",
+          "line": 143,
+          "params": ["daemonProfilesDir: string", "sessionName: string", "options: any", "env?: NodeJS.ProcessEnv"],
+          "returns": "Promise<FullConfig>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "configFromEnv",
+          "file": "packages/playwright-core/src/tools/mcp/config.ts",
+          "line": 370,
+          "params": ["env?: NodeJS.ProcessEnv"],
+          "returns": "Config & { configFile?: string }",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "BrowserModel.connectOverCDP",
+          "file": "packages/playwright-core/src/tools/mcp/browserModel.ts",
+          "line": 71,
+          "params": ["sendToCDPClient: SendToCDPClient"],
+          "returns": "void",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "CLIOptions",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "browser", "type": "string", "required": false, "default": "chrome" },
+            { "name": "headless", "type": "boolean", "required": false, "default": "platform-dependent" },
+            { "name": "isolated", "type": "boolean", "required": false, "default": "true" },
+            { "name": "timeoutAction", "type": "number", "required": false, "default": "5000" },
+            { "name": "timeoutNavigation", "type": "number", "required": false, "default": "60000" },
+            { "name": "port", "type": "number", "required": false },
+            { "name": "caps", "type": "string[]", "required": false },
+            { "name": "snapshotMode", "type": "'full'|'none'", "required": false }
+          ]
+        },
+        {
+          "name": "BrowserModel.TabSession",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "tabId", "type": "number", "required": true },
+            { "name": "sessionId", "type": "string", "required": true },
+            { "name": "targetInfo", "type": "any", "required": true },
+            { "name": "childSessions", "type": "Set<string>", "required": true }
+          ]
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "outputDir cannot point to a system directory",
+          "location": "packages/playwright-core/src/tools/mcp/config.ts:136-141",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "isolated mode prohibits userDataDir",
+          "location": "packages/playwright-core/src/tools/mcp/config.ts:221",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Chromium gets --disable-blink-features=AutomationControlled by default",
+          "location": "packages/playwright-core/src/tools/mcp/config.ts:243-246",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "headless auto-detected on Linux: headless=true unless DISPLAY is set",
+          "location": "packages/playwright-core/src/tools/mcp/config.ts:128-129",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["playwright-core/client", "playwright-core/server", "dotenv", "zod"],
+      "algorithms": [
+        {
+          "name": "Layered config merge",
+          "description": "5-layer merge: defaults → global config file → project config file → env vars → CLI flags. Later layers win per-field.",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "protocol/spec",
+      "path": "packages/protocol/spec",
+      "purpose": "YAML-defined RPC channel contracts — source of truth for client↔server communication protocol",
+      "primary_files": [
+        "packages/protocol/spec/page.yml",
+        "packages/protocol/spec/frame.yml",
+        "packages/protocol/spec/browser.yml",
+        "packages/protocol/spec/browserContext.yml",
+        "packages/protocol/spec/network.yml",
+        "packages/protocol/spec/handles.yml",
+        "packages/protocol/spec/api.yml",
+        "packages/protocol/spec/core.yml"
+      ],
+      "functions": [],
+      "entities": [
+        {
+          "name": "Page (protocol initializer)",
+          "confidence": "confirmed",
+          "fields": [
+            { "name": "mainFrame", "type": "Frame", "required": true },
+            { "name": "viewportSize", "type": "{width: int, height: int}?", "required": false },
+            { "name": "isClosed", "type": "boolean", "required": true },
+            { "name": "opener", "type": "Page?", "required": false },
+            { "name": "video", "type": "Artifact?", "required": false }
+          ]
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Protocol is contract-first YAML DSL — client and server code generated from these specs",
+          "location": "packages/protocol/spec/",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Commands flagged with pause:true require user interaction before completing",
+          "location": "packages/protocol/spec/page.yml:44",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [],
+      "complexity": "medium"
+    },
+    {
+      "name": "playwright-test",
+      "path": "packages/playwright-test",
+      "purpose": "Test runner — fixture system, test lifecycle, reporting, retries, parallelism",
+      "primary_files": [
+        "packages/playwright-test/index.d.ts",
+        "packages/playwright-test/reporter.d.ts"
+      ],
+      "functions": [],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Test runner is self-hosted — Playwright tests itself using @playwright/test",
+          "location": "package.json scripts.ttest",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["playwright-core"],
+      "algorithms": [],
+      "complexity": "high"
+    },
+    {
+      "name": "html-reporter",
+      "path": "packages/html-reporter/src",
+      "purpose": "React SPA for viewing HTML test reports — displays test results with filtering, gantt, and detail views",
+      "primary_files": [
+        "packages/html-reporter/src/index.tsx",
+        "packages/html-reporter/src/reportView.tsx",
+        "packages/html-reporter/src/testCaseView.tsx",
+        "packages/html-reporter/src/loadedReport.ts",
+        "packages/html-reporter/src/filter.ts",
+        "packages/html-reporter/src/gantt.tsx"
+      ],
+      "functions": [],
+      "entities": [],
+      "business_rules": [],
+      "dependencies": ["react", "vite"],
+      "algorithms": [],
+      "complexity": "medium"
+    },
+    {
+      "name": "trace-viewer",
+      "path": "packages/trace-viewer/src",
+      "purpose": "React SPA for viewing Playwright trace files — replays network, actions, and DOM snapshots",
+      "primary_files": [
+        "packages/trace-viewer/src/index.tsx",
+        "packages/trace-viewer/src/uiMode.tsx",
+        "packages/trace-viewer/src/snapshotMain.ts",
+        "packages/trace-viewer/src/sw-main.ts"
+      ],
+      "functions": [],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Service worker serves snapshot HTML offline — intercepts network requests to replay DOM",
+          "location": "packages/trace-viewer/src/sw-main.ts",
+          "confidence": "inferred"
+        }
+      ],
+      "dependencies": ["react", "vite"],
+      "algorithms": [
+        {
+          "name": "DOM snapshot replay",
+          "description": "Trace ZIP extracted client-side, service worker serves snapshot frames for DOM replay",
+          "confidence": "inferred"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "injected",
+      "path": "packages/injected/src",
+      "purpose": "Scripts injected into browser pages at runtime — selectors, highlights, recorder, ARIA, clock",
+      "primary_files": [
+        "packages/injected/src/injectedScript.ts",
+        "packages/injected/src/selectorEngine.ts",
+        "packages/injected/src/selectorGenerator.ts",
+        "packages/injected/src/ariaSnapshot.ts",
+        "packages/injected/src/highlight.ts",
+        "packages/injected/src/bindingsController.ts",
+        "packages/injected/src/clock.ts",
+        "packages/injected/src/recorder/"
+      ],
+      "functions": [],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Injected scripts run in browser page context — no Node.js APIs available",
+          "location": "packages/injected/src/",
+          "confidence": "inferred"
+        },
+        {
+          "description": "selectorGenerator auto-generates selectors for elements clicked during recording",
+          "location": "packages/injected/src/selectorGenerator.ts",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["isomorphic"],
+      "algorithms": [
+        {
+          "name": "Selector generation",
+          "description": "Given a DOM element, generate the most stable/readable selector (prefers ARIA roles, test-ids, then CSS)",
+          "confidence": "inferred"
+        },
+        {
+          "name": "ARIA snapshot extraction",
+          "description": "Walks accessibility tree to produce structured ARIA snapshot for toMatchAriaSnapshot assertions",
+          "confidence": "inferred"
+        }
+      ],
+      "complexity": "high"
+    }
+  ]
+}

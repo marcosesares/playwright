@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-06-04T00:00:00Z",
+  "project_root": "C:/Views/playwright",
+  "project_name": "playwright",
+  "version": "1.61.0-next",
+  "repository": "https://github.com/microsoft/playwright",
+  "license": "Apache-2.0",
+  "languages": [
+    { "name": "TypeScript", "extensions": [".ts"], "file_count": 1243 },
+    { "name": "TSX", "extensions": [".tsx"], "file_count": 146 },
+    { "name": "JavaScript", "extensions": [".js"], "file_count": 195 },
+    { "name": "ESM JavaScript", "extensions": [".mjs"], "file_count": 35 },
+    { "name": "Shell", "extensions": [".sh"], "file_count": 36 },
+    { "name": "YAML", "extensions": [".yml", ".yaml"], "file_count": 22 },
+    { "name": "Python", "extensions": [".py"], "file_count": 2 },
+    { "name": "C#", "extensions": [".cs"], "file_count": 2 }
+  ],
+  "primary_language": "TypeScript",
+  "frameworks": [
+    { "name": "Playwright", "version": "1.61.0-next", "source": "package.json", "role": "self-hosted test framework" },
+    { "name": "React", "version": "^19.2.1", "source": "package.json", "role": "UI for html-reporter, trace-viewer, recorder" },
+    { "name": "Vite", "version": "^6.4.1", "source": "package.json", "role": "frontend bundler" },
+    { "name": "TypeScript", "version": "^6.0.3", "source": "package.json", "role": "primary language" },
+    { "name": "ESBuild", "version": "^0.25.0", "source": "package.json", "role": "package bundler" },
+    { "name": "chromium-bidi", "version": "^12.0.0", "source": "package.json", "role": "WebDriver BiDi protocol" }
+  ],
+  "package_manager": "npm",
+  "monorepo": true,
+  "monorepo_tool": "npm workspaces",
+  "entry_points": [
+    { "path": "packages/playwright-core/src/entry/cliDaemon.ts", "type": "cli_entry", "description": "Main CLI daemon process" },
+    { "path": "packages/playwright-core/src/entry/mcp.ts", "type": "mcp_server_entry", "description": "MCP (Model Context Protocol) server" },
+    { "path": "packages/playwright-core/src/entry/dashboardApp.ts", "type": "dashboard_entry", "description": "Flakiness dashboard app" },
+    { "path": "packages/playwright-core/src/entry/oopBrowserDownload.ts", "type": "tool_entry", "description": "Out-of-process browser download" },
+    { "path": "packages/playwright-core/src/tools/cli-client/cli.js", "type": "cli_client", "description": "playwright-cli script" }
+  ],
+  "config_files": [
+    "package.json",
+    "tsconfig.json",
+    "tests/tsconfig.json"
+  ],
+  "ci_cd": [
+    ".github/workflows/tests_primary.yml",
+    ".github/workflows/tests_secondary.yml",
+    ".github/workflows/tests_bidi.yml",
+    ".github/workflows/tests_components.yml",
+    ".github/workflows/tests_docker.yml",
+    ".github/workflows/tests_mcp.yml",
+    ".github/workflows/tests_others.yml",
+    ".github/workflows/tests_extension.yml",
+    ".github/workflows/tests_webview_simulator.yml",
+    ".github/workflows/publish_release.yml",
+    ".github/workflows/publish_release_docker.yml",
+    ".github/workflows/publish_extension.yml",
+    ".github/workflows/roll_browser_into_playwright.yml",
+    ".github/workflows/roll_nodejs.yml",
+    ".github/workflows/roll_stable_test_runner.yml",
+    ".github/workflows/create_test_report.yml",
+    ".github/workflows/infra.yml",
+    ".github/workflows/copilot-setup-steps.yml",
+    ".github/workflows/merge.config.ts",
+    ".github/workflows/pr_check_client_side_changes.yml",
+    ".github/workflows/tests_docker_changes.yml",
+    ".github/workflows/tests_docker_release.yml"
+  ],
+  "docker": {
+    "dockerfiles": [
+      "utils/docker/Dockerfile.jammy",
+      "utils/docker/Dockerfile.noble"
+    ]
+  },
+  "database_hints": [],
+  "has_database": false,
+  "test_framework": "Playwright (@playwright/test) — self-hosted",
+  "test_file_count": 546,
+  "test_breakdown": {
+    "library": 152,
+    "page": 128,
+    "playwright-test": 100,
+    "mcp": 90,
+    "other": 76
+  },
+  "modules": [
+    "playwright-core/client",
+    "playwright-core/server",
+    "playwright-core/server/dispatchers",
+    "playwright-core/server/chromium",
+    "playwright-core/server/firefox",
+    "playwright-core/server/webkit",
+    "playwright-core/server/android",
+    "playwright-core/server/electron",
+    "playwright-core/server/bidi",
+    "playwright-core/tools/mcp",
+    "playwright-core/cli",
+    "playwright-core/remote",
+    "protocol/spec",
+    "playwright-test",
+    "html-reporter",
+    "trace-viewer",
+    "recorder",
+    "injected",
+    "browser_patches"
+  ],
+  "total_files": 1681,
+  "organization_suggestion": {
+    "granularity": "module",
+    "rationale": "Clear top-level package boundaries by domain: playwright-core (engine), playwright-test (runner), protocol (RPC spec), html-reporter, trace-viewer, recorder, injected — each is a distinct module with its own package.json.",
+    "signals": [
+      {
+        "type": "top_level_domain_folders",
+        "evidence": [
+          "packages/playwright-core/",
+          "packages/playwright-test/",
+          "packages/playwright-client/",
+          "packages/html-reporter/",
+          "packages/trace-viewer/",
+          "packages/recorder/",
+          "packages/injected/",
+          "packages/protocol/"
+        ]
+      }
+    ],
+    "features": []
+  }
+}

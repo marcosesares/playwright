@@ -151,3 +151,27 @@ Detailed guides for common development tasks:
 - **[Adding and Modifying APIs](.claude/skills/playwright-dev/api.md)** — 6-step process: define docs → implement client → define protocol → implement dispatcher → implement server → write tests
 - **[MCP Tools and CLI Commands](.claude/skills/playwright-dev/tools.md)** — `defineTool()`/`defineTabTool()`, tool capabilities, CLI `declareCommand()`, config options, testing with MCP fixtures
 - **[Vendoring Dependencies](.claude/skills/playwright-dev/vendor.md)** — bundle architecture, esbuild setup, typed wrappers, adding deps to existing bundles
+
+
+---
+
+# Reversa
+
+> Framework de Engenharia Reversa instalado neste projeto.
+
+## Como usar
+
+Digite `/reversa` para ativar o Reversa e iniciar ou retomar a análise do projeto.
+
+## Comportamento ao ativar
+
+Quando o usuário digitar `/reversa` ou a palavra `reversa` sozinha em uma mensagem:
+
+1. Ative o skill `reversa` disponível em `.claude/skills/reversa/SKILL.md`
+2. Se não encontrar em `.claude/skills/`, tente `.agents/skills/reversa/SKILL.md`
+3. Leia o SKILL.md na íntegra e siga exatamente as instruções do Reversa
+
+## Regra não-negociável
+
+Nunca apague, modifique ou sobrescreva arquivos pré-existentes do projeto legado.
+O Reversa escreve **apenas** em `.reversa/` e `_reversa_sdd/`.
